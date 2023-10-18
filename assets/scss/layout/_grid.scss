@@ -1,0 +1,37 @@
+/* Grid */
+
+:root {
+    --gutter: 9px;
+    --outside-gutter: 21px;
+}
+
+.container {
+    max-width: 1440px;
+    width: 100%;
+    padding-left: var(--outside-gutter);
+    padding-right: var(--outside-gutter);
+    margin: 0 auto;
+    &.content-pad {
+        padding-left: calc(var(--outside-gutter) + var(--gutter));
+        padding-right: calc(var(--outside-gutter) + var(--gutter));
+    }
+}
+.content-pad {
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+}
+@media (min-width: $desktop-small) {
+    :root {
+        --outside-gutter: 39px;
+    }
+}
+@media (min-width: $desktop-large) {
+    .container-s {
+        padding-left: percentage(math.div(1, 12));
+        padding-right: percentage(math.div(1, 12));
+        &.content-pad {
+            padding-left: calc(var(--gutter) + #{percentage(math.div(1, 12))});
+            padding-right: calc(var(--gutter) + #{percentage(math.div(1, 12))});
+        }
+    }
+}
