@@ -53,6 +53,15 @@ export default defineNuxtConfig({
             failOnError: false,
         },
     },
+    modules: ["@storyblok/nuxt", "@nuxt/image"],
+    storyblok: {
+        accessToken: process.env.SB_TOKEN,
+    },
+    image: {
+        storyblok: {
+            baseURL: "https://a.storyblok.com",
+        },
+    },
     css: ["@/assets/scss/main.scss"],
     build: {
         transpile: ["gsap"],

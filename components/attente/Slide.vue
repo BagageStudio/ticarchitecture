@@ -1,0 +1,69 @@
+<template>
+    <div class="slide">
+        <div class="text" v-html="titre"></div>
+        <Image cover :image="data.Image" />
+    </div>
+</template>
+
+<script setup>
+const { data, activeSlide, index } = defineProps({
+    data: { type: Object, required: true },
+    activeSlide: { type: Number, required: true },
+    index: { type: Number, required: true },
+});
+
+const titre = computed(() => renderRichText(data.Titre));
+
+const isActive = computed(() => {
+    return index === activeSlide;
+});
+</script>
+
+<style lang="scss" scoped>
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    flex: 0 0 100%;
+    opacity: 0;
+    &.active {
+        opacity: 1;
+    }
+}
+
+.text {
+    position: absolute;
+    top: 0px;
+    height: 20%;
+    left: 0px;
+    right: 0;
+    padding: 20px;
+    color: $white;
+    z-index: 2;
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0) 100%
+        );
+
+        z-index: -1;
+    }
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+}
+</style>
