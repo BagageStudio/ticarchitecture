@@ -1,7 +1,11 @@
 <template>
     <div class="slide">
         <div class="text" v-html="titre"></div>
-        <Image cover :image="data.Image" />
+        <Image
+            :loading="index === 0 ? 'eager' : 'lazy'"
+            cover
+            :image="data.Image"
+        />
     </div>
 </template>
 
