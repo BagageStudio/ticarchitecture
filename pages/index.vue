@@ -101,7 +101,12 @@ onMounted(() => {
     launchAutoplay();
 });
 
-// useSeo(data.value?.home?._seoMetaTags);
+useHead({
+    htmlAttrs: {
+        lang: "fr",
+    },
+    title: "TICA architectes & urbanistes",
+});
 </script>
 
 <style lang="scss" scoped>
@@ -197,6 +202,12 @@ onMounted(() => {
             display: block;
         }
     }
+    &:not(.active) .inner-bullet {
+        &:hover,
+        &:focus {
+            background-color: $white;
+        }
+    }
 }
 .inner-bullet {
     position: relative;
@@ -229,7 +240,10 @@ onMounted(() => {
     border: none;
     top: 50%;
     transform: translateY(-50%);
+    transform-origin: 50% 50%;
     box-shadow: 0 0 50px 0px rgba(49, 49, 49, 0.5);
+    transition: transform 0.15s ease-in-out;
+    z-index: 2;
     &::after {
         content: "";
         display: block;
@@ -240,9 +254,21 @@ onMounted(() => {
     &.prev {
         left: 20px;
         transform: translateY(-50%) rotate(-180deg);
+        &:hover {
+            transform: translateY(-50%) rotate(-180deg) scale(1.1);
+        }
+        &:active {
+            transform: translateY(-50%) rotate(-180deg) scale(1);
+        }
     }
     &.next {
         right: 20px;
+        &:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+        &:active {
+            transform: translateY(-50%) scale(1);
+        }
     }
 }
 

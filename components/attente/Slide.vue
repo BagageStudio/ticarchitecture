@@ -30,8 +30,12 @@ const isActive = computed(() => {
     width: 100%;
     flex: 0 0 100%;
     opacity: 0;
+    transition: opacity 0s ease-out 0.3s;
+    z-index: 0;
     &.active {
         opacity: 1;
+        transition: opacity 0.3s ease-out;
+        z-index: 1;
     }
 }
 

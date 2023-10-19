@@ -17,7 +17,7 @@
                     ? Math.round((width / image.width) * image.height)
                     : image.height
             "
-            :src="image.filename"
+            :src="image.filename + '/m/'"
             :alt="image.alt"
             :loading="loading"
             :preload="preload"
