@@ -34,6 +34,15 @@
         </div>
         <div class="footer">
             <Image :image="story.content.logo" />
+            <div class="infos">
+                <div
+                    v-for="info in story.content.infos"
+                    :key="info.id"
+                    class="info"
+                >
+                    <div v-html="renderRichText(info.Text)"></div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -94,17 +103,38 @@ const prevSlide = () => {
 
 .footer {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    height: 130px;
     padding: 20px;
     background-color: $white;
     .image {
-        height: 70px;
+        height: 50px;
+        margin-bottom: 20px;
         &:deep(img) {
             height: 100%;
             width: auto;
         }
+    }
+}
+
+.infos {
+    display: flex;
+    &:deep(p) {
+        margin-top: 0;
+    }
+}
+
+.info {
+    padding: 0 20px;
+    font-size: 1.2rem;
+    border-left: 1px solid $black;
+    &:first-child {
+        border-left: 0px;
+    }
+    &:deep(a) {
+        text-decoration: underline;
     }
 }
 
@@ -179,6 +209,32 @@ const prevSlide = () => {
     }
     &.next {
         right: 20px;
+    }
+}
+
+@media (min-width: $phone) {
+    .footer {
+        flex-direction: row;
+        .image {
+            margin-bottom: 0;
+        }
+    }
+    .infos {
+        margin-left: 20px;
+    }
+    .info {
+        &:first-child {
+            border-left: 1px solid $black;
+        }
+    }
+}
+
+@media (min-width: $tablet) {
+    .footer {
+        padding: 30px;
+    }
+    .info {
+        font-size: 1.6rem;
     }
 }
 </style>
