@@ -10,7 +10,7 @@
                     :index="index"
                     :class="{ active: activeSlide === index }"
                 />
-                <div class="bullets">
+                <div class="bullets" :style="{ '--progress': progress }">
                     <button
                         class="bullet"
                         v-for="(slide, index) in story.content.slider"
@@ -18,7 +18,9 @@
                         :class="{ active: activeSlide === index }"
                         role="button"
                         @click="setSlide(index)"
-                    ></button>
+                    >
+                        <div class="inner-bullet"></div>
+                    </button>
                 </div>
                 <button
                     class="arrow-btn prev"
@@ -48,6 +50,8 @@
 </template>
 
 <script setup>
+import { gsap } from "gsap";
+
 const story = await useAsyncStoryblok("attente");
 
 if (story.value.status) {
@@ -58,9 +62,12 @@ if (story.value.status) {
 }
 
 const activeSlide = ref(0);
+const timer = ref(null);
+const progress = ref(0);
 
 const setSlide = (index) => {
     activeSlide.value = index;
+    launchAutoplay();
 };
 
 const nextSlide = () => {
@@ -68,7 +75,7 @@ const nextSlide = () => {
         activeSlide.value + 1 > story.value.content.slider.length - 1
             ? 0
             : activeSlide.value + 1;
-    activeSlide.value = nextIndex;
+    setSlide(nextIndex);
 };
 
 const prevSlide = () => {
@@ -76,8 +83,23 @@ const prevSlide = () => {
         activeSlide.value === 0
             ? story.value.content.slider.length - 1
             : activeSlide.value - 1;
-    activeSlide.value = prevIndex;
+    setSlide(prevIndex);
 };
+
+const launchAutoplay = () => {
+    if (timer.value) timer.value.kill();
+    progress.value = 0;
+    timer.value = gsap.to(progress, {
+        value: 1,
+        duration: 8,
+        ease: "linear",
+        onComplete: () => nextSlide(),
+    });
+};
+
+onMounted(() => {
+    launchAutoplay();
+});
 
 // useSeo(data.value?.home?._seoMetaTags);
 </script>
@@ -169,17 +191,29 @@ const prevSlide = () => {
 .bullet {
     padding: 5px;
     border: none;
+    &.active .inner-bullet {
+        width: 25px;
+        &::before {
+            display: block;
+        }
+    }
+}
+.inner-bullet {
+    position: relative;
+    height: 10px;
+    width: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: rgb(255 255 255 / 40%);
+    transition: width 0.2s ease-out;
     &::before {
         content: "";
-        display: block;
-        height: 10px;
-        width: 10px;
-        border-radius: 50%;
+        display: none;
+        width: 100%;
+        height: 100%;
+        transform: scaleX(var(--progress));
+        transform-origin: 0 0;
         background-color: $white;
-        opacity: 0.4;
-    }
-    &.active::before {
-        opacity: 1;
     }
 }
 
