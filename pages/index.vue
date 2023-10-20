@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="footer">
-            <Image :image="story.content.logo" />
+            <Image :image="story.content.logo" contains />
             <div class="infos">
                 <div
                     v-for="info in story.content.infos"
@@ -235,39 +235,52 @@ useHead({
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    background-color: $white;
     border: none;
     top: 50%;
     transform: translateY(-50%);
     transform-origin: 50% 50%;
-    box-shadow: 0 0 50px 0px rgba(49, 49, 49, 0.5);
-    transition: transform 0.15s ease-in-out;
     z-index: 2;
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background-color: $white;
+        box-shadow: 0 0 50px 0px rgba(49, 49, 49, 0.5);
+        transition: transform 0.15s ease-in-out;
+        transform: scale(1);
+    }
     &::after {
         content: "";
+        position: relative;
+        top: 1px;
         display: block;
-        width: 9px;
-        height: 14px;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 9 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M2.10367 13.3105L0.689453 11.8963L5.48235 7.10344L0.689453 2.31055L2.10367 0.896334L8.31077 7.10344L2.10367 13.3105Z' fill='black'/%3E%3C/svg%3E%0A");
+        width: 10px;
+        height: 16px;
+        transform: scale(1);
+    }
+    &:hover {
+        &::before {
+            transform: scale(1.1);
+        }
+    }
+    &:active {
+        &::before {
+            transform: scale(1);
+        }
     }
     &.prev {
         left: 20px;
-        transform: translateY(-50%) rotate(-180deg);
-        &:hover {
-            transform: translateY(-50%) rotate(-180deg) scale(1.1);
-        }
-        &:active {
-            transform: translateY(-50%) rotate(-180deg) scale(1);
+        &::after {
+            left: -1px;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.14329 2.60798e-08L10 1.82246L3.7108 8L9.99869 14.1763L8.14329 16L-6.99382e-07 8L8.14329 2.60798e-08Z' fill='black'/%3E%3C/svg%3E%0A");
         }
     }
     &.next {
         right: 20px;
-        &:hover {
-            transform: translateY(-50%) scale(1.1);
-        }
-        &:active {
-            transform: translateY(-50%) scale(1);
+        &::after {
+            right: -1px;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M1.85671 16L0 14.1775L6.2892 8L0.00131215 1.82375L1.85671 0L10 8L1.85671 16Z' fill='black'/%3E%3C/svg%3E%0A");
         }
     }
 }
