@@ -10,18 +10,6 @@
                     :index="index"
                     :class="{ active: activeSlide === index }"
                 />
-                <div class="bullets" :style="{ '--progress': progress }">
-                    <button
-                        class="bullet"
-                        v-for="(slide, index) in story.content.slider"
-                        :key="slide._uid"
-                        :class="{ active: activeSlide === index }"
-                        role="button"
-                        @click="setSlide(index)"
-                    >
-                        <div class="inner-bullet"></div>
-                    </button>
-                </div>
                 <button
                     class="arrow-btn prev"
                     role="button"
@@ -34,15 +22,32 @@
                 ></button>
             </div>
         </div>
-        <div class="footer">
-            <Image :image="story.content.logo" contains />
-            <div class="infos">
-                <div
-                    v-for="info in story.content.infos"
-                    :key="info.id"
-                    class="info"
+        <div class="wrapper-footer">
+            <div class="bullets" :style="{ '--progress': progress }">
+                <button
+                    class="bullet"
+                    v-for="(slide, index) in story.content.slider"
+                    :key="slide._uid"
+                    :class="{ active: activeSlide === index }"
+                    role="button"
+                    @click="setSlide(index)"
                 >
-                    <div v-html="renderRichText(info.Text)"></div>
+                    <div class="inner-bullet"></div>
+                </button>
+            </div>
+            <div class="footer">
+                <div class="infos">
+                    <Image :image="story.content.logo" contains />
+                    <div
+                        v-for="info in story.content.infos"
+                        :key="info.id"
+                        class="info"
+                    >
+                        <div
+                            class="info-inner"
+                            v-html="renderRichText(info.Text)"
+                        ></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -114,12 +119,11 @@ useHead({
     position: relative;
     height: 100vh;
     width: 100vw;
-    display: flex;
-    flex-direction: column;
+    overflow: hidden;
 }
 
 .wrapper-slider {
-    flex: 1 1 0%;
+    height: 100%;
     width: 100%;
 }
 .slider {
@@ -128,16 +132,21 @@ useHead({
     height: 100%;
 }
 
+.wrapper-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
 .footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
     padding: 20px;
-    background-color: $white;
     .image {
-        height: 50px;
+        display: flex;
+        height: 30px;
+        width: 48%;
         margin-bottom: 20px;
         &:deep(img) {
             height: 100%;
@@ -148,56 +157,45 @@ useHead({
 
 .infos {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
     &:deep(p) {
         margin-top: 0;
     }
 }
 
 .info {
-    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+    width: 48%;
     font-size: 1.2rem;
-    border-left: 1px solid $black;
+    line-height: 15px;
+    font-weight: normal;
     &:first-child {
         border-left: 0px;
     }
-    &:deep(a) {
-        text-decoration: underline;
-    }
+}
+
+.info-inner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .bullets {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     padding-bottom: 20px;
     z-index: 2;
-    &::before {
-        content: "";
-        position: absolute;
-        top: -100px;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(
-            0deg,
-            rgba(0, 0, 0, 0.7) 0%,
-            rgba(0, 0, 0, 0.2) 50%,
-            rgba(0, 0, 0, 0) 100%
-        );
-
-        z-index: -1;
-    }
 }
 
 .bullet {
     padding: 5px;
     border: none;
     &.active .inner-bullet {
-        width: 25px;
+        width: 17px;
         &::before {
             display: block;
         }
@@ -211,9 +209,8 @@ useHead({
 }
 .inner-bullet {
     position: relative;
-    height: 10px;
-    width: 10px;
-    border-radius: 5px;
+    height: 3px;
+    width: 7px;
     overflow: hidden;
     background-color: rgb(255 255 255 / 40%);
     transition: width 0.2s ease-out;
@@ -233,6 +230,7 @@ useHead({
     width: 45px;
     height: 45px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     border: none;
@@ -240,48 +238,31 @@ useHead({
     transform: translateY(-50%);
     transform-origin: 50% 50%;
     z-index: 2;
+    &::after,
     &::before {
         content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: 50%;
+        position: relative;
+        display: block;
+        height: 2px;
+        width: 20px;
         background-color: $white;
-        box-shadow: 0 0 50px 0px rgba(49, 49, 49, 0.5);
-        transition: transform 0.15s ease-in-out;
-        transform: scale(1);
+    }
+    &::before {
+        transform-origin: 100% 50%;
+        top: 1.5px;
+        transform: rotate(45deg);
     }
     &::after {
-        content: "";
-        position: relative;
-        top: 1px;
-        display: block;
-        width: 10px;
-        height: 16px;
-        transform: scale(1);
-    }
-    &:hover {
-        &::before {
-            transform: scale(1.1);
-        }
-    }
-    &:active {
-        &::before {
-            transform: scale(1);
-        }
+        transform-origin: 100% 50%;
+        top: -1.5px;
+        transform: rotate(-45deg);
     }
     &.prev {
+        transform: translateY(-50%) rotate(-180deg);
         left: 20px;
-        &::after {
-            left: -1px;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.14329 2.60798e-08L10 1.82246L3.7108 8L9.99869 14.1763L8.14329 16L-6.99382e-07 8L8.14329 2.60798e-08Z' fill='black'/%3E%3C/svg%3E%0A");
-        }
     }
     &.next {
         right: 20px;
-        &::after {
-            right: -1px;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M1.85671 16L0 14.1775L6.2892 8L0.00131215 1.82375L1.85671 0L10 8L1.85671 16Z' fill='black'/%3E%3C/svg%3E%0A");
-        }
     }
 }
 
@@ -293,12 +274,16 @@ useHead({
         }
     }
     .infos {
-        margin-left: 20px;
+        flex-wrap: nowrap;
     }
     .info {
-        &:first-child {
-            border-left: 1px solid $black;
-        }
+        width: auto;
+    }
+    .info-inner {
+        align-items: flex-end;
+    }
+    .footer .image {
+        width: auto;
     }
 }
 
@@ -308,6 +293,32 @@ useHead({
     }
     .info {
         font-size: 1.6rem;
+        line-height: 18px;
+    }
+    .footer .image {
+        height: 36px;
+    }
+
+    .bullet {
+        &.active .inner-bullet {
+            width: 45px;
+        }
+    }
+    .inner-bullet {
+        width: 20px;
+    }
+}
+
+@media (min-width: $desktop) {
+    .footer {
+        padding: 30px 50px;
+    }
+    .info {
+        font-size: 2.2rem;
+        line-height: 25px;
+    }
+    .footer .image {
+        height: 50px;
     }
 }
 </style>

@@ -40,6 +40,9 @@ const isActive = computed(() => {
         opacity: 1;
         transition: opacity 0.3s ease-out;
         z-index: 1;
+        .image {
+            transform: scale(1);
+        }
     }
 }
 
@@ -50,28 +53,20 @@ const isActive = computed(() => {
     left: 0px;
     right: 0;
     padding: 20px;
-    color: $white;
     z-index: 2;
-    &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(
-            180deg,
-            rgba(0, 0, 0, 0.6) 0%,
-            rgba(0, 0, 0, 0.2) 50%,
-            rgba(0, 0, 0, 0) 100%
-        );
-
-        z-index: -1;
-    }
+    font-size: 1.4rem;
 }
 
 .image {
     width: 100%;
     height: 100%;
+    transform: scale(1.2);
+    transition: transform 8s linear;
+}
+
+@media (min-width: $tablet) {
+    .text {
+        font-size: 1.6rem;
+    }
 }
 </style>

@@ -3,8 +3,8 @@
         class="image"
         :class="{ loaded, cover, contains }"
         :style="{
-            '--focalPointX': `${(image.focalPoint?.x || 0.5) * 100}%`,
-            '--focalPointY': `${(image.focalPoint?.y || 0.5) * 100}%`,
+            '--focalPointX': `${(focalPoint.x || 0.5) * 100}%`,
+            '--focalPointY': `${(focalPoint.y || 0.5) * 100}%`,
         }"
         v-if="image"
     >
@@ -52,6 +52,20 @@ const { image, sizes, preload, loading, contains, cover, width } = defineProps({
 });
 
 const loaded = ref(false);
+const focalPoint = ref({});
+
+if (image.focus) {
+    const dimensions = {
+        width: parseInt(image.filename.split("/")[5].split("x")[0]),
+        height: parseInt(image.filename.split("/")[5].split("x")[1]),
+    };
+    focalPoint.value = {
+        x: parseInt(image.focus.split(":")[0].split("x")[0]) / dimensions.width,
+        y:
+            parseInt(image.focus.split(":")[0].split("x")[1]) /
+            dimensions.height,
+    };
+}
 
 const onLoad = () => {
     loaded.value = true;
