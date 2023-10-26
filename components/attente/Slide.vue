@@ -49,7 +49,6 @@ const isActive = computed(() => {
 .text {
     position: absolute;
     top: 0px;
-    height: 20%;
     left: 0px;
     right: 0;
     padding: 20px;
@@ -67,6 +66,13 @@ const isActive = computed(() => {
 @media (min-width: $tablet) {
     .text {
         font-size: 1.6rem;
+        padding: 30px;
+    }
+}
+
+@media (min-width: $desktop) {
+    .text {
+        padding: 30px 50px;
     }
 }
 </style>
