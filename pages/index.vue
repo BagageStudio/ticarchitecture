@@ -66,7 +66,7 @@ if (story.value.status) {
     });
 }
 
-const activeSlide = ref(0);
+const activeSlide = ref(-1);
 const timer = ref(null);
 const progress = ref(0);
 
@@ -103,6 +103,7 @@ const launchAutoplay = () => {
 };
 
 onMounted(() => {
+    activeSlide.value = 0;
     launchAutoplay();
 });
 

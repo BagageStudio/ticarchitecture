@@ -17,10 +17,6 @@ const { data, activeSlide, index } = defineProps({
 });
 
 const titre = computed(() => renderRichText(data.Titre));
-
-const isActive = computed(() => {
-    return index === activeSlide;
-});
 </script>
 
 <style lang="scss" scoped>
