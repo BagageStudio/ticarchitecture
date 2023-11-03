@@ -1,6 +1,10 @@
 <template>
     <div class="slide">
-        <div class="text" v-html="titre"></div>
+        <div
+            class="text"
+            v-html="titre"
+            :style="{ '--color': textColor }"
+        ></div>
         <Image
             :loading="index === 0 ? 'eager' : 'lazy'"
             cover
@@ -17,6 +21,7 @@ const { data, activeSlide, index } = defineProps({
 });
 
 const titre = computed(() => renderRichText(data.Titre));
+const textColor = computed(() => data.couleur_texte?.color || "#fff");
 </script>
 
 <style lang="scss" scoped>
@@ -30,11 +35,11 @@ const titre = computed(() => renderRichText(data.Titre));
     width: 100%;
     flex: 0 0 100%;
     opacity: 0;
-    transition: opacity 0s ease-out 0.3s;
+    transition: opacity 0s ease-out 0.8s;
     z-index: 0;
     &.active {
         opacity: 1;
-        transition: opacity 0.3s ease-out;
+        transition: opacity 0.8s ease-out;
         z-index: 1;
         .image {
             transform: scale(1);
@@ -50,6 +55,7 @@ const titre = computed(() => renderRichText(data.Titre));
     padding: 20px;
     z-index: 2;
     font-size: 1.4rem;
+    color: var(--color);
 }
 
 .image {
